@@ -16,7 +16,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "RestWise",
+  title: "SleepWise",
   description: "A Sleep Tracker App",
 };
 
