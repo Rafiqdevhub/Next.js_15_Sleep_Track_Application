@@ -18,16 +18,23 @@ const AddRecord = () => {
     formData.set("text", sleepQuality);
 
     const { error } = await addSleepRecord(formData);
-
     if (error) {
       setAlertMessage(`Error: ${error}`);
       setAlertType("error");
+      setTimeout(() => {
+        setAlertMessage(null);
+        setAlertType(null);
+      }, 5000);
     } else {
       setAlertMessage("Sleep record added successfully!");
       setAlertType("success");
       formRef.current?.reset();
       setAmount(6);
       setSleepQuality("");
+      setTimeout(() => {
+        setAlertMessage(null);
+        setAlertType(null);
+      }, 3000);
     }
 
     setIsLoading(false);

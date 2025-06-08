@@ -1,7 +1,11 @@
+"use client";
 import { SignInButton } from "@clerk/nextjs";
 import Image from "next/image";
+import { useState } from "react";
 
 const Guest = () => {
+  const [openFaq, setOpenFaq] = useState<number | null>(null);
+
   const features = [
     {
       icon: "🌙",
@@ -44,9 +48,30 @@ const Guest = () => {
     },
   ];
 
+  const faqs = [
+    {
+      question: "What is SleepWise?",
+      answer:
+        "SleepWise is an intelligent sleep tracking platform that combines modern technology with sleep science to help you understand and improve your sleep patterns.",
+    },
+    {
+      question: "How does it work?",
+      answer:
+        "Simply log your sleep duration and quality daily. Our advanced analytics engine processes your data to provide personalized insights and recommendations.",
+    },
+    {
+      question: "Is my data secure?",
+      answer:
+        "Absolutely! We use Clerk for secure authentication and industry-standard encryption to protect your sleep data and personal information.",
+    },
+  ];
+
+  const toggleFaq = (index: number) => {
+    setOpenFaq(openFaq === index ? null : index);
+  };
+
   return (
     <div className="font-sans bg-gradient-to-b from-gray-50 to-gray-100 text-gray-800">
-      {/* Hero Section */}
       <div className="relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-r from-purple-500/10 via-pink-500/10 to-red-500/10 animate-gradient-x"></div>
         <div className="flex flex-col md:flex-row items-center justify-between p-3 md:p-16 pt-20 relative z-10">
@@ -71,20 +96,23 @@ const Guest = () => {
               </div>
             </div>
           </div>
-          <div className="flex-1 flex justify-center items-center relative">
-            <div className="absolute -inset-4 bg-gradient-to-r from-purple-500/20 via-pink-500/20 to-red-500/20 rounded-full blur-3xl"></div>
-            <Image
-              src="/sleep-tracker.png"
-              alt="SleepTracker Illustration"
-              width={500}
-              height={500}
-              className="relative z-10 w-full md:max-w-md rounded-2xl shadow-2xl transform hover:scale-105 transition-transform duration-500"
-            />
+          <div className="flex-1 flex justify-center items-center relative p-4 md:p-8">
+            <div className="absolute -inset-4 bg-gradient-to-r from-purple-500/20 via-pink-500/20 to-red-500/20 rounded-full blur-3xl animate-pulse"></div>
+            <div className="relative z-10 w-full aspect-square md:aspect-[4/3] max-w-lg rounded-2xl overflow-hidden bg-white/10 backdrop-blur-sm p-2 shadow-2xl hover:shadow-3xl transition-all duration-500 hover:scale-[1.02]">
+              <div className="w-full h-full relative rounded-xl overflow-hidden">
+                <Image
+                  src="/sleepwise.jpg"
+                  alt="SleepTracker Illustration"
+                  fill
+                  priority
+                  className="object-cover object-center"
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                />
+              </div>
+            </div>
           </div>
         </div>
       </div>
-
-      {/* Features Section */}
       <div className="py-20 px-8 bg-white">
         <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 bg-clip-text text-transparent">
           Why Choose SleepWise?
@@ -104,47 +132,50 @@ const Guest = () => {
           ))}
         </div>
       </div>
-
-      {/* FAQ Section */}
       <div className="py-20 px-8 bg-gradient-to-b from-gray-50 to-white">
         <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 bg-clip-text text-transparent">
           Common Questions
         </h2>
-        <div className="max-w-3xl mx-auto space-y-8">
-          <div className="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300">
-            <h3 className="text-xl font-bold text-gray-800">
-              What is SleepWise?
-            </h3>
-            <p className="text-gray-600 mt-2">
-              SleepWise is an intelligent sleep tracking platform that combines
-              modern technology with sleep science to help you understand and
-              improve your sleep patterns.
-            </p>
-          </div>
-          <div className="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300">
-            <h3 className="text-xl font-bold text-gray-800">
-              How does it work?
-            </h3>
-            <p className="text-gray-600 mt-2">
-              Simply log your sleep duration and quality daily. Our advanced
-              analytics engine processes your data to provide personalized
-              insights and recommendations.
-            </p>
-          </div>
-          <div className="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300">
-            <h3 className="text-xl font-bold text-gray-800">
-              Is my data secure?
-            </h3>
-            <p className="text-gray-600 mt-2">
-              Absolutely! We use Clerk for secure authentication and
-              industry-standard encryption to protect your sleep data and
-              personal information.
-            </p>
-          </div>
+        <div className="max-w-3xl mx-auto space-y-4">
+          {faqs.map((faq, index) => (
+            <div
+              key={index}
+              className="bg-white rounded-xl shadow-md hover:shadow-lg transition-all duration-300"
+            >
+              <button
+                onClick={() => toggleFaq(index)}
+                className="w-full p-6 text-left flex justify-between items-center"
+              >
+                <h3 className="text-xl font-bold text-gray-800">
+                  {faq.question}
+                </h3>
+                <svg
+                  className={`w-6 h-6 transform transition-transform duration-300 ${
+                    openFaq === index ? "rotate-180" : ""
+                  }`}
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M19 9l-7 7-7-7"
+                  />
+                </svg>
+              </button>
+              <div
+                className={`overflow-hidden transition-all duration-300 ${
+                  openFaq === index ? "max-h-40" : "max-h-0"
+                }`}
+              >
+                <p className="px-6 pb-6 text-gray-600">{faq.answer}</p>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
-
-      {/* Testimonials Section */}
       <div className="py-20 px-8 bg-white">
         <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 bg-clip-text text-transparent">
           What Our Community Says
@@ -175,8 +206,6 @@ const Guest = () => {
           ))}
         </div>
       </div>
-
-      {/* CTA Section */}
       <div className="py-20 px-8 bg-gradient-to-b from-gray-50 to-white text-center">
         <h2 className="text-3xl md:text-4xl font-bold mb-6 bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 bg-clip-text text-transparent">
           Ready to Transform Your Sleep?
