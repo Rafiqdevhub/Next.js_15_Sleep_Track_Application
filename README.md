@@ -1,6 +1,6 @@
 # SleepWise - Sleep Tracker Application
 
-![SleepWise](./public/sleep-tracker.png)
+![SleepWise](./public/banner.png)
 
 A modern web application built with Next.js that helps users track and analyze their sleep patterns. Users can log their sleep duration, quality, and view insights about their sleep habits over time.
 
